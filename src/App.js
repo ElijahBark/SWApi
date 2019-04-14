@@ -1,28 +1,33 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import {connect} from 'react-redux' ;
+import Movies from "./Components/Movies";
+import {changeMovies} from "./actions/MoviesActions"
 
-class App extends Component {
-  render() {
+const App = ({movies, changeMovies}) => {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+        <div className="App">
+            <header className="App-header">
+                <h1 className="App-title">SWapi</h1>
+            </header>
+            <Movies moviesList={movies.moviesList}/>
+            <button onClick={changeMovies} >change</button>
+        </div>
+    )
+};
 
-export default App;
+const mapStateToProps = (store) => {
+    console.log(store);
+    return {
+        movies: store.movies,
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeMovies: () => dispatch(changeMovies())
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+
