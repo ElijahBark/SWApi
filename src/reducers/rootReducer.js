@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import { moviesReducer } from './movies'
-import { personsReducer } from './persons'
+import { personsReducer, moviesReducer, vehiclesReducer } from './itemsReducer'
 
 export const rootReducer = combineReducers({
     movies: moviesReducer,
     persons: personsReducer,
-})
+    vehicles: vehiclesReducer,
+});
