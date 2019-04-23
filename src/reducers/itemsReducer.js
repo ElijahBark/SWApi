@@ -1,4 +1,4 @@
-import {ACTIONS} from "../config";
+import {actions} from "../config";
 
 const DefaultState = function() {
     return {
@@ -23,7 +23,22 @@ function loadReducerCreator(defaultState, actionName) {
     }
 }
 
-export const moviesReducer = loadReducerCreator(new DefaultState(), ACTIONS.LOAD_MOVIES);
-export const personsReducer = loadReducerCreator(new DefaultState(), ACTIONS.LOAD_PERSONS);
-export const vehiclesReducer = loadReducerCreator(new DefaultState(), ACTIONS.LOAD_VEHICLES);
+
+const defaultCurrentPage = {
+    data: {}
+};
+
+
+export const currentPageReducer = (state = defaultCurrentPage, action) => {
+    switch (action.type) {
+        case actions.SET_PERSONAL_PAGE:
+            return { ...state, data: {...action.payload}};
+        default:
+            return state
+    }
+};
+
+export const moviesReducer = loadReducerCreator(new DefaultState(), actions.LOAD_MOVIES);
+export const personsReducer = loadReducerCreator(new DefaultState(), actions.LOAD_PERSONS);
+export const vehiclesReducer = loadReducerCreator(new DefaultState(), actions.LOAD_VEHICLES);
 

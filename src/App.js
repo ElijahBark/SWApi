@@ -1,51 +1,72 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux' ;
-import ItemsList from "./Components/ItemsList";
+import ItemsList from "./Components/ItemsList/";
 import {loadItems} from "./actions/itemActions"
-import {ACTIONS, LINKS, NAMES} from "./config";
+import {actions, links, names, imageLinks} from "./config";
+import {BrowserRouter as Router, Route} from "react-router-dom";
+import RenderedItemList from "./Components/RenderedItemList";
+import MainPage from "./Components/MainPage";
+import Header from "./Components/Header";
+import PersonalPage from './Components/PersonalPage'
 
 
 class App extends Component {
     componentDidMount() {
         this.props.loadMovies();
-        this.props.loadPersons(1);
-        this.props.loadPersons(2);
+        this.props.loadPersons();
+        this.props.loadVehicles();
 
-        // this.props.loadVehicles();
     }
 
     render() {
-        let {movies, persons} = this.props;
+        let {movies, persons, vehicles, loadPersons, loadVehicles} = this.props;
 
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <h1 className="App-title">SWapi</h1>
-                </header>
-                <ItemsList itemsList={movies.list[0]} arrOfKeys={["title"]}/>
-                <ItemsList itemsList={persons.list[0]} arrOfKeys={["name","height"]}/>
-                <ItemsList itemsList={persons.list[1]} arrOfKeys={["name"]}/>
-                {/*<ItemsList itemsList={items.vehiclesList} arrOfKeys={["name"]} name={'vehicles'}/>*/}
-                {/*<ItemsList itemsList={moviesList[0]} arrOfKeys={["title"]} name={"films"}/>*/}
+        return <Router>
+            <div style={{backgroundColor: "#192752", minHeight: '100vh'}} className="App">
+                <Route path={'/'} component={Header}/>
+                <Route exact path={'/'} component={MainPage}/>
+                <Route exact path={`/${names.PERSONS}`} render={() => <ItemsList
+                    itemsList={persons.list[0]} arrOfKeys={["name", "height", "mass"]}
+                    imageLink={imageLinks.PERSONS} num={2}/>
+                }/>
+                <Route exact path={`/${names.VEHICLES}`} render={() => <ItemsList
+                    itemsList={vehicles.list[0]} arrOfKeys={["name"]}
+                    imageLink={imageLinks.VEHICLES} num={2} />
+                }/>
+                <Route exact path={`/${names.MOVIES}`} render={() => <ItemsList
+                    itemsList={movies.list[0]} arrOfKeys={["title"]}
+                    imageLink={imageLinks.MOVIES} />
+                }/>
+                <Route exact path={`/${names.PERSONS}/:id`} render={(props) => <RenderedItemList
+                    match={props.match} list={persons.list} load={loadPersons}
+                    arrOfKeys={["name", "height", "mass"]} imageLink={imageLinks.PERSONS}/>}/>
+                <Route  path={`/${names.MOVIES}/item/:id`} render={(props) => <PersonalPage match={props.match} kind={names.MOVIES} arrOfKeys={["title"]} imageLink={imageLinks.MOVIES}/>}/>
+
+                <Route  path={`/${names.PERSONS}/item/:id`} render={(props) => <PersonalPage match={props.match} kind={names.PERSONS} arrOfKeys={["name", "height", "mass"]} imageLink={imageLinks.PERSONS}/>}/>
+
+                <Route exact path={`/${names.VEHICLES}/:id`} render={(props) => <RenderedItemList
+                    match={props.match} list={vehicles.list} load={loadVehicles}
+                       arrOfKeys={["name"]} imageLink={imageLinks.VEHICLES}/>}/>
+
+                <Route path={`/${names.VEHICLES}/item/:id`} render={(props) => <PersonalPage match={props.match} kind={names.VEHICLES} arrOfKeys={["name"]} imageLink={imageLinks.VEHICLES}/>}/>
+
             </div>
-        )
+        </Router>
     }
 }
 
 
-
-const mapStateToProps = (store) => {
-    return {
+const mapStateToProps = (store) => ({
         movies: store.movies,
-        persons: store.persons
-    }
-};
+        persons: store.persons,
+        vehicles: store.vehicles,
+});
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        loadMovies: () => dispatch(loadItems(ACTIONS.LOAD_MOVIES, LINKS.MOVIES, NAMES.MOVIES )),
-        loadPersons: (num) => dispatch(loadItems(ACTIONS.LOAD_PERSONS, LINKS.PERSONS, NAMES.PERSONS, num))
-        // loadVehicles: () => dispatch(loadItems("https://swapi.co/api/vehicles/", "vehicles", "LOAD_VEHICLES"))
+        loadMovies: () => dispatch(loadItems(actions.LOAD_MOVIES, links.MOVIES, names.MOVIES)),
+        loadPersons: (num) => dispatch(loadItems(actions.LOAD_PERSONS, links.PERSONS, names.PERSONS, num)),
+        loadVehicles: (num) => dispatch(loadItems(actions.LOAD_VEHICLES, links.VEHICLES, names.VEHICLES, num))
     }
 };
 

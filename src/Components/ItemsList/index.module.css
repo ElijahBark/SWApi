@@ -1,0 +1,28 @@
+.list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.item {
+    width: calc(33% - 15px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 0 15px 15px;
+}
+.image {
+    display: block;
+    width: 100%;
+    align-self: flex-start;
+}
+
+.text {
+    font-family: "Poppins", sans-serif;
+    color: yellow;
+    padding-left: 10px;
+    font-size: 11px;
+}
+
+.button {
+
+}
