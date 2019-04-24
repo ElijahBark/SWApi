@@ -27,11 +27,11 @@ class App extends Component {
                 <Route exact path={'/'} component={MainPage}/>
                 <Route exact path={`/${names.PERSONS}`} render={() => <ItemsList
                     itemsList={persons.list[0]} arrOfKeys={["name", "height", "mass"]}
-                    imageLink={imageLinks.PERSONS} num={2}/>
+                    imageLink={imageLinks.PERSONS}/>
                 }/>
                 <Route exact path={`/${names.VEHICLES}`} render={() => <ItemsList
                     itemsList={vehicles.list[0]} arrOfKeys={["name"]}
-                    imageLink={imageLinks.VEHICLES} num={2} />
+                    imageLink={imageLinks.VEHICLES} />
                 }/>
                 <Route exact path={`/${names.MOVIES}`} render={() => <ItemsList
                     itemsList={movies.list[0]} arrOfKeys={["title"]}
@@ -49,7 +49,6 @@ class App extends Component {
                        arrOfKeys={["name"]} imageLink={imageLinks.VEHICLES}/>}/>
 
                 <Route path={`/${names.VEHICLES}/item/:id`} render={(props) => <PersonalPage match={props.match} kind={names.VEHICLES} arrOfKeys={["name"]} imageLink={imageLinks.VEHICLES}/>}/>
-
             </div>
         </Router>
     }
